@@ -2,6 +2,8 @@
 #define _MAIN_H_
 
 #include <stdarg.h>
+#include <stdio.h>
+
 /**
  * struct print - structure for printing various types
  * @t: type to print
