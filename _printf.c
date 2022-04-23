@@ -9,7 +9,6 @@
 
 int _printf(const char *format, ...)
 {
-	const char *a;
 	va_list args;
 	int i = 0, j = 0;
 	char *s;
@@ -29,18 +28,24 @@ int _printf(const char *format, ...)
 					break;
 				case 's':
 					s = va_arg(args, char *);
-					puts(s, stdout);
+					puts(s);
 					break;
 				case '%':
 					_putchar('%');
 					break;
 			}
-			else
-			{
-				j = _putchar(*format);
-			}
 		}
+		if (j < 0)
+		{
+			i = j;
+			break;
+		}
+		else
+		{
+			i += j;
+		}
+		format++;
 	}
-	return (0);
 	va_end(args);
+	return (i);
 }
