@@ -1,4 +1,5 @@
 #include "main.h"
+<<<<<<< HEAD
 #include <stdlib.h>
 
 /**
@@ -35,49 +36,4 @@ static int (*check_for_specifiers(const char *format))(va_list)
 		}
 	}
 	return (p[i].func);
-}
-
-/**
- * _printf - prints anything
- * @format: list of argument types passed to the function
- *
- * Return: number of characters printed
- */
-
-int _printf(const char *format, ...)
-{
-	unsigned int i = 0, count = 0;
-	va_list args;
-	int (*func)(va_list);
-
-	if (format == NULL)
-		return (-1);
-	va_start(args, format);
-	while (format[i])
-	{
-		for (; format[i] != '%' && format[i]; i++)
-		{
-			_putchar(format[i]);
-			count++;
-		}
-		if (!format[i])
-			return (count);
-		func = check_for_specifiers(&format[i + 1]);
-		if (func != NULL)
-		{
-			count += func(args);
-			i += 2;
-			continue;
-		}
-		if (!format[i + 1])
-			return (-1);
-		_putchar(format[i]);
-		count++;
-		if (format[i + 1] == '%')
-			i += 2;
-		else
-			i++;
-	}
-	va_end(args);
-	return (count);
 }
