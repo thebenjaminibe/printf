@@ -7,26 +7,27 @@
  *
  * Return: pointer to valid function or NULL
  */
+
 static int (*check_for_specifiers(const char *format))(va_list)
 {
 	unsigned int i;
-	print_t p[] = {
-		{"c", print_c},
-		{"s", print_s},
-		{"i", print_i},
-		{"d", print_d},
-		{"u", print_u},
-		{"b", print_b},
-		{"o", print_o},
-		{"x", print_x},
-		{"X", print_X},
-		{"p", print_p},
-		{"S", print_S},
-		{"r", print_r},
-		{"R", print_R},
+	spec_t p[] = {
+		{"c", spec_c},
+		{"s", spec_s},
+		{"i", spec_i},
+		{"d", spec_d},
+		{"u", spec_u},
+		{"b", spec_b},
+		{"o", spec_o},
+		{"x", spec_x},
+		{"X", spec_X},
+		{"p", spec_p},
+		{"S", spec_S},
+		{"r", spec_r},
+		{"R", spec_R},
 		{NULL, NULL}
 	};
-
+	
 	for (i = 0; p[i].t != NULL; i++)
 	{
 		if (*(p[i].t) == *format)
@@ -34,7 +35,7 @@ static int (*check_for_specifiers(const char *format))(va_list)
 			break;
 		}
 	}
-	return (p[i].f);
+	return (p[i].func);
 }
 
 /**
@@ -43,16 +44,17 @@ static int (*check_for_specifiers(const char *format))(va_list)
  *
  * Return: number of characters printed
  */
+
 int _printf(const char *format, ...)
 {
 	unsigned int i = 0, count = 0;
-	va_list valist;
-	int (*f)(va_list);
+	va_list args;
+	int (*func)(va_list);
 
 	if (format == NULL)
 		return (-1);
-	va_start(valist, format);
-	while (format[i])
+	va_start(args, format);
+	while (format [i])
 	{
 		for (; format[i] != '%' && format[i]; i++)
 		{
@@ -61,22 +63,22 @@ int _printf(const char *format, ...)
 		}
 		if (!format[i])
 			return (count);
-		f = check_for_specifiers(&format[i + 1]);
-		if (f != NULL)
+		func = check_for_specifiers(&format[i + 1]);
+		if (func != NULL)
 		{
-			count += f(valist);
+			count += func(args);
 			i += 2;
 			continue;
 		}
 		if (!format[i + 1])
-			return (-1);
+		       return (-1);
 		_putchar(format[i]);
 		count++;
-		if (format[i + 1] == '%')
+		if (format[i] == '%')
 			i += 2;
 		else
 			i++;
 	}
-	va_end(valist);
+	va_end(args);
 	return (count);
 }
